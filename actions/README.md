@@ -7,7 +7,7 @@ This folder contains the [Github Actions](https://github.com/features/actions) u
   * Does not have read & write access.
   * Started via PR/push to PR (on main branch).
 * [lorenzwalthert/touchstone/actions/comment](https://github.com/lorenzwalthert/touchstone/tree/main/actions/comment)
-  * Comments the results on the PR that originated the workflow run. 
+  * Creates or updates a single sticky comment with the results on the PR that originated the workflow run. 
   * Has read & write access.
   * Started automatically when receive job finishes.
   * Will create an additional commit status to the PR check suite. 

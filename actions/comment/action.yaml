@@ -15,21 +15,19 @@ runs:
         github-token: ${{ inputs.GITHUB_TOKEN }}
         repository: ${{ github.repository }}
         run-id: ${{github.event.workflow_run.id }}
+    - name: 'Read PR number'
+      id: 'pr'
+      shell: bash
+      run: echo "number=$(tr -cd '0-9' < ./NR)" >> "$GITHUB_OUTPUT"
     - name: 'Comment on PR'
       id: 'comment'
-      uses: actions/github-script@v7
+      uses: marocchino/sticky-pull-request-comment@v3
       with:
-        github-token: ${{ inputs.GITHUB_TOKEN }}
-        script: |
-          var fs = require('fs');
-          var issue_number = Number(fs.readFileSync('./NR'));
-          var body = fs.readFileSync('./info.txt').toString();
-          await github.rest.issues.createComment({
-            owner: context.repo.owner,
-            repo: context.repo.repo,
-            issue_number: issue_number,
-            body: body
-          });
+        GITHUB_TOKEN: ${{ inputs.GITHUB_TOKEN }}
+        number_force: ${{ steps.pr.outputs.number }}
+        header: touchstone
+        path: ./info.txt
+        skip_unchanged: true
     - uses: actions/github-script@v7
       if: always()
       with:
